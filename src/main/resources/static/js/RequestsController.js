@@ -1,6 +1,7 @@
 let socket;
 getHostAddress();
 loadChatHistory();
+// document.getElementById("login").showModal();
 
 let chatTextarea = document.getElementById("chat-textarea");
 let sendButton = document.getElementById("send-button");
@@ -22,7 +23,7 @@ chatTextarea.addEventListener("keydown", function (e) {
         sendMessage();
         chatTextarea.value = "";
         onInput.call(chatTextarea);
-        scrollChatTextAreaToBottom();
+        scrollChatTextAreaToBottom(); 
     }
 });
 
@@ -35,13 +36,15 @@ sendButton.addEventListener("click", function(e) {
 });
 
 function sendMessage() {
-    socket.send(chatTextarea.value);
+    if (chatTextarea.value.trim() != "") {
+        socket.send(chatTextarea.value);
+    }
 }
 
 function showMessage(messageText) {
     let div = document.createElement("div");
     div.innerHTML = messageText;
-    div.setAttribute("style", "word-wrap: break-word; font-size: 24px; padding: 6px 5px 6px 5px;");
+    div.setAttribute("class", "message");
     messages.appendChild(div);
 }
 
@@ -65,8 +68,8 @@ function getHostAddress() {
         .then(address => connect(address));
 }
 
-function connect(address) {
-    socket = new WebSocket(`ws://${address}/chat`);
+function connect() {
+    socket = new WebSocket(`ws://${window.location.host}/chat`);
     
     socket.onmessage = (event) => {
         showMessage(event.data);

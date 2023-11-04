@@ -1,11 +1,17 @@
 package com.chat.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Message {
+    private long timestamp;
+    private final User sender;
     private String content;
-    private String senderName;
-    private Date timestamp;
+
+    public Message(User sender, String content) {
+        timestamp = System.currentTimeMillis();
+        this.sender = sender;
+        this.content = content;
+    }
 
     public String getContent() {
         return content;
@@ -15,19 +21,15 @@ public class Message {
         this.content = content;
     }
 
-    public String getSenderName() {
-        return senderName;
+    public User getSender() {
+        return sender;
     }
 
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
-    }
-
-    public Date getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 }

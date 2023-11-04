@@ -74,3 +74,22 @@ html, body {
     margin: 0px 0px 0px 0px;
     padding-bottom: 0px;
 }
+
+.message {
+    word-wrap: break-word; 
+    font-size: 24px; 
+    padding: 6px 5px 6px 5px;
+}
+
+#login {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+}
+
+#login::backdrop {
+    background-color: white;
+}

@@ -10,16 +10,27 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
+	flatDir {
+		dirs 'lib'
+	}
 }
 
 dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+//	implementation 'org.sqlite:sqlite-jdbc-3.43.2.1' // lib directory
+	implementation 'org.postgresql:postgresql-42.6.0' // lib directory
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.data:spring-data-jpa'
+	testImplementation 'junit:junit:4.13.1'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.named('test') {
+test {
 	useJUnitPlatform()
 }
+
+//tasks.named('test') {
+//	useJUnitPlatform()
+//}

@@ -1,31 +1,30 @@
 package com.chat.service;
 
+import com.chat.model.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
 public class SessionManager {
-    private final Map<String, WebSocketSession> sessions = new HashMap<>();
+    private final Map<WebSocketSession, User> sessions = new HashMap<>();
 
-    public void addSession(WebSocketSession session) {
-        if (!sessions.containsKey(session.getId())) {
-            sessions.put(session.getId(), session);
+    public void addSession(WebSocketSession session, User user) {
+        if (!sessions.containsKey(session)) {
+            sessions.put(session, user);
         }
     }
 
     public void removeSession(WebSocketSession session) {
-        sessions.remove(session.getId());
+        sessions.remove(session);
     }
 
     public void broadcastMessage(TextMessage msg) throws IOException {
-        for (WebSocketSession session : sessions.values()) {
+        for (WebSocketSession session : sessions.keySet()) {
             session.sendMessage(msg);
         }
     }
