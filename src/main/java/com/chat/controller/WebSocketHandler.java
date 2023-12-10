@@ -42,7 +42,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 //        userManager.addSession(session);
         String messageText = message.getPayload();
         User user = new User("DefaultUser");
-        messageService.addMessage(new Message(user, messageText)); // TODO
+        messageService.addMessage(new Message(user.getId(), messageText)); // TODO
         System.out.println(session.getId() + " : " + messageText);
         sessionManager.broadcastMessage(message);
     }

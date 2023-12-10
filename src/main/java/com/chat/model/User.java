@@ -1,13 +1,24 @@
 package com.chat.model;
 
-public class User {
-    private final String name;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-    public User(String name) {
-        this.name = name;
+@Table("users")
+public class User {
+    @Id
+    private long id;
+    private final String username;
+
+    public User(String username) {
+        this.username = username;
     }
 
-    public String getName() {
-        return this.name;
+    public String getUsername() {
+        return this.username;
+    }
+
+    public long getId() {
+        return this.id;
     }
 }

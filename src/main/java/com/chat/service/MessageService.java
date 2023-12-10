@@ -2,40 +2,48 @@ package com.chat.service;
 
 import com.chat.model.Message;
 import com.chat.model.User;
-import org.springframework.beans.factory.annotation.Value;
+import com.chat.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 @Service
 public class MessageService {
+    private MessageRepository messageRepository;
+
     private Connection connection;
     private Statement statement;
 
-    public MessageService(ConnectionManager connectionManager) {
-        try {
-            connection = connectionManager.getConnection();
-            statement = connection.createStatement();
-            initDb();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public MessageService(MessageRepository messageRepository) {
+        this.messageRepository = messageRepository;
     }
 
+//    public MessageService(ConnectionManager connectionManager) {
+//        try {
+//            connection = connectionManager.getConnection();
+//            statement = connection.createStatement();
+//            initDb();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
     public void addMessage(Message message) {
-        String username = message.getSender().getName();
-        String content = message.getContent();
-        Long timestamp = message.getTimestamp();
-        String query = "INSERT INTO Messages VALUES ('%s', '%s', '%d');".formatted(username, content, timestamp);
-        try {
-            statement.executeUpdate(query);
-        } catch (SQLException sqlException) {
-            throw new RuntimeException(sqlException);
-        }
+        messageRepository.save(message);
     }
+
+//    public void addMessage(Message message) {
+//        String username = message.getSender().getName();
+//        String content = message.getContent();
+//        Long timestamp = message.getTimestamp();
+//        String query = "INSERT INTO Messages VALUES ('%s', '%s', '%d');".formatted(username, content, timestamp);
+//        try {
+//            statement.executeUpdate(query);
+//        } catch (SQLException sqlException) {
+//            throw new RuntimeException(sqlException);
+//        }
 
     public List<Message> getMessages() {
         String query = "SELECT * FROM Messages;";
@@ -45,8 +53,8 @@ public class MessageService {
             while (resultSet.next()) {
                 User user = new User(resultSet.getString("username"));
                 String text = resultSet.getString("message");
-                Message message = new Message(user, text);
-                message.setTimestamp(resultSet.getLong("time"));
+                Message message = new Message(user.getId(), text);
+//                message.setTimeSent(resultSet.getLong("time"));
                 messages.add(message);
             }
             return messages;
@@ -54,6 +62,7 @@ public class MessageService {
             throw new RuntimeException(sqlException);
         }
     }
+//    }
 
     public void clearMessages() {
         String query = "DELETE FROM Messages;";

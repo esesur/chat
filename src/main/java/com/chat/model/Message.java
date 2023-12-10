@@ -1,14 +1,18 @@
 package com.chat.model;
 
-import java.time.LocalDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
+@Table("messages")
 public class Message {
-    private long timestamp;
-    private final User sender;
+    @Id
+    private long id;
+    private final long timeSent;
+    private final long sender;
     private String content;
 
-    public Message(User sender, String content) {
-        timestamp = System.currentTimeMillis();
+    public Message(long sender, String content) {
+        timeSent = System.currentTimeMillis();
         this.sender = sender;
         this.content = content;
     }
@@ -21,15 +25,15 @@ public class Message {
         this.content = content;
     }
 
-    public User getSender() {
+    public long getSenderId() {
         return sender;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public long getTimeSent() {
+        return timeSent;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
+//    public void setTimeSent(long timeSent) {
+//        this.timeSent = timeSent;
+//    }
 }
